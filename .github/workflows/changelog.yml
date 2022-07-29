@@ -2,8 +2,8 @@ on:
   push:
   pull_request:
     types: [opened, synchronize]
-
-  print_title_of_pr:
+jobs:
+  CHANGELOG:
     runs-on: ubuntu-latest
     steps:
       - name : Print Title of PR
