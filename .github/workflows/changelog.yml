@@ -1,9 +1,9 @@
 on:
-  push:
   pull_request:
     types: [closed]
 jobs:
   CHANGELOG:
+    if: github.event.pull_request.merged == 'true'
     runs-on: ubuntu-latest
     steps:
       - name : Print Title of PR
