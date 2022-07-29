@@ -1,10 +1,22 @@
 on:
   push:
   pull_request:
-    types: [opened, synchronize]
-
-  print_title_of_pr:
+    types: [closed]
+jobs:
+  CHANGELOG:
     runs-on: ubuntu-latest
     steps:
       - name : Print Title of PR
         run: echo The Title of your PR is ${{ github.event.pull_request.title }}
+      - uses: actions/checkout@v1
+      - name: Run a one-line script
+        run: |
+          echo ${{ github.event.pull_request.title }} >> CHANGELOG.md
+          git config --local user.name "githab"
+          git add CHANGELOG.md
+          git commit -m "Updating the CHANGELOG.md"
+      - name: Push changes # push the output folder to your repo
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          force: true
