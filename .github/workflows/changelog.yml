@@ -3,7 +3,7 @@ on:
     types: [closed]
 jobs:
   CHANGELOG:
-    if: github.event.pull_request.merged == 'true' && contains(github.event.pull_request.title, 'RR-')
+    if: github.event.pull_request.merged && contains(github.event.pull_request.title, 'RR-')
     runs-on: ubuntu-latest
     steps:
       - name : Print Title of PR
