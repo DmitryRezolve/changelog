@@ -6,10 +6,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name : Print Title of PR
-        run: echo The Title of your PR is ${{ github.event[*] }}
+        run: echo The Title of your PR is ${{ github.event.pull_request.title }}
       - uses: actions/checkout@v1
       - name: Run a one-line script
         run: |
+          echo '${{ toJSON(github.event.pull_request) }}'
           git checkout main
           git pull
           echo ${{ github.event.pull_request.title }} >> CHANGELOG.md
@@ -20,4 +21,5 @@ jobs:
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          force: true
+          ssh: true
+          branch: ${{ github.ref }}
