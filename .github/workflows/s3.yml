@@ -4,6 +4,7 @@ jobs:
   CHANGELOG:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v1
       - name: Upload assets
         run: |
           ls -all
