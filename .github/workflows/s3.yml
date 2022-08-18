@@ -10,7 +10,7 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: eu-central-1
-      - name: Copy assets
+          aws-region: ${{ secrets.AWS_S3_REGION }}
+      - name: Copy tax rates
         run: |
-          aws s3 cp ${{ github.workspace }}/test.csv s3://${{ secrets.AWS_S3_BUCKET_PUBLIC }}/rezolve_rce_tax_rates/test.csv
+          aws s3 sync ${{ github.workspace }}/ s3://${{ secrets.AWS_S3_BUCKET_PUBLIC }}/rezolve_rce_tax_rates/ --exclude "*" --include "*.csv"  --include "*.json"
