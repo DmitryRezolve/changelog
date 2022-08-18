@@ -5,13 +5,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
-      - name: Upload assets
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: eu-central-1
+      - name: Copy assets
         run: |
-          ls -all
-          file=test.csv
-          resource="/${{ secrets.AWS_S3_BUCKET_PUBLIC }}/rezolve_rce_tax_rates/${file}"
-          contentType="text/csv"
-          dateValue=`date -R`
-          stringToSign="PUT\n\n${contentType}\n${dateValue}\n${resource}"
-          signature=`echo -en ${stringToSign} | openssl sha1 -hmac ${{ secrets.AWS_SECRET_ACCESS_KEY}} -binary | base64`
-          curl -X PUT -T "${file}" -H "Host: ${{ secrets.AWS_S3_BUCKET_PUBLIC }}.s3.amazonaws.com" -H "Date: ${dateValue}" -H "Content-Type: ${contentType}" -H "Authorization: AWS ${{ secrets.AWS_ACCESS_KEY_ID }}:${signature}"  https://${{ secrets.AWS_S3_BUCKET_PUBLIC }}.s3.amazonaws.com/rezolve_rce_tax_rates/${file}
+          aws s3 cp ${{ github.workspace }}/test.csv s3://${{ secrets.AWS_S3_BUCKET_PUBLIC }}/rezolve_rce_tax_rates/test.csv
