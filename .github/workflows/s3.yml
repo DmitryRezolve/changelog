@@ -6,7 +6,8 @@ jobs:
     steps:
       - name: Upload assets
         run: |
-          file=$PWD/test.csv
+          ls -all
+          file=test.csv
           resource="/${{ secrets.AWS_S3_BUCKET_PUBLIC }}/rezolve_rce_tax_rates/${file}"
           contentType="text/csv"
           dateValue=`date -R`
