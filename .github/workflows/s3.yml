@@ -5,7 +5,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Upload assets
-      - uses: actions/checkout@v1
         run: |
           file=test.csv
           resource="/${{ secrets.AWS_S3_BUCKET_PUBLIC }}/rezolve_rce_tax_rates/${file}"
