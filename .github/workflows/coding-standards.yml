@@ -1,0 +1,39 @@
+name: Coding Standards
+
+on:
+  pull_request:
+    paths:
+      - "**.php"
+      - "**.phtml"
+
+jobs:
+  phpcs:
+    runs-on: ubuntu-latest
+    env:
+      PHP_VERSION_CODE_QUALITY: ${{ secrets.PHP_VERSION_CODE_QUALITY }}
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ env.PHP_VERSION_CODE_QUALITY }}
+          tools: composer:v2
+
+      - name: Install Rezolve Coding Standard
+        run: php -v && git clone --single-branch --branch RR-12998-cq-php-version https://github.com/rezolved/rezolve_rce_coding_standard.git && cd rezolve_rce_coding_standard && composer install && cd ..
+
+      - id: files
+        uses: jitterbit/get-changed-files@v1
+
+      - name: Run Rector
+        run: cp -r rezolve_rce_coding_standard/src/rector.php rector.php && rezolve_rce_coding_standard/vendor/bin/rector process --ansi --no-progress-bar --dry-run ${{ steps.files.outputs.added_modified }}
+
+      - name: Run Phpcs
+        uses: tinovyatkin/action-php-codesniffer@v1
+        with:
+          files: "**"
+          scope: files
+          phpcs_path: rezolve_rce_coding_standard/vendor/bin/phpcs --ignore=rezolve_rce_coding_standard/
+          standard: rezolve_rce_coding_standard/src/ruleset.xml
