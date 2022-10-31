@@ -22,7 +22,7 @@ jobs:
           tools: composer:v2
 
       - name: Install Rezolve Coding Standard
-        run: git clone --single-branch RR-12998-cq-php-version --branch  https://github.com/rezolved/rezolve_rce_coding_standard.git && cd rezolve_rce_coding_standard && composer install && cd ..
+        run: php -v && git clone --single-branch --branch RR-12998-cq-php-version https://github.com/rezolved/rezolve_rce_coding_standard.git && cd rezolve_rce_coding_standard && composer install && cd ..
 
       - id: files
         uses: jitterbit/get-changed-files@v1
