@@ -10,7 +10,7 @@ jobs:
   phpcs:
     runs-on: ubuntu-latest
     env:
-      PHP_VERSION_CODE_QUALITY: ${{ secrets.PHP_VERSION_CODE_QUALITY1 }} ?? '8.0'
+      PHP_VERSION_CODE_QUALITY: ${{ secrets.PHP_VERSION_CODE_QUALITY1 ?? '8.0' }}
     steps:
       - uses: actions/checkout@v2
         with:
